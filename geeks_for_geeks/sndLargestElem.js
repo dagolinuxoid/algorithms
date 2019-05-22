@@ -15,14 +15,13 @@ function getSndMaxElem(arr) {
 }
 
 function slow(arr) {
-  let max=Math.max(...arr);
-  let sndMax=-Infinity;
-  for (let i=0; i<arr.length; i++) {
-    if (arr[i]>sndMax&&arr[i]<max) sndMax=arr[i];
-  }
+  let max=Math.max(...arr),
+      sndMax=-Infinity;
+  arr.forEach(e=> e>sndMax && e<max && (sndMax=e));
   return sndMax;
 }
 
+// both functions have O(n) though
 const assert=require('assert').strict;
 for (let i=0; i<100; i++) {
   let arr=[...Array(20)].map((_,i)=>i*Math.random()*100|0);
