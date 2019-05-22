@@ -14,6 +14,7 @@ function getSndMaxElem(arr) {
   // or return isFinite(sndMax) ? sndMax : false (null) or 'does not exist';
 }
 
+// both functions have O(n) though
 function slow(arr) {
   let max=Math.max(...arr),
       sndMax=-Infinity;
@@ -21,7 +22,8 @@ function slow(arr) {
   return sndMax;
 }
 
-// both functions have O(n) though
+
+// tests for nodeJS
 const assert=require('assert').strict;
 for (let i=0; i<100; i++) {
   let arr=[...Array(20)].map((_,i)=>i*Math.random()*100|0);
