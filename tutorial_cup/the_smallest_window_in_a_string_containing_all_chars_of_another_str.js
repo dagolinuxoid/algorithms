@@ -6,6 +6,8 @@
  minimum sub string in S which will contain all the characters of T
 */
 
+// Brute force | actually I slightly misunderstood the task
+
 function findSubstring(str, letters) {
     const uniqueChars= new Set(letters); 
 
@@ -24,6 +26,48 @@ function findSubstring(str, letters) {
 
     }
     return `impossible`;
+}
+
+// Method 2(Efficient)
+// Time complesity: O(n)
+
+function findSubstring(src, target) {
+    if (src.length < target.length) return 'no such window exists' 
+    [src, target] = [src, target].map(toUpperCase);
+    const tarCount= Array(26).fill(0),
+          srcCount= Array(26).fill(0);
+
+    for (let c of target) {
+        tarCount[c.charCodeAt()-65] += 1;
+    }
+
+    let matches= 0;
+    let i= 0;
+    let start= 0;
+    let startIdx;
+    let minLen= Infinity;
+
+    for (let c of src) {
+        const code= c.charCodeAt()-65;
+        srcCount[code]++;
+        if (tarCount[code] && srcCount[code]<=tarCount[code]) {
+            if (startIdx===undefined) {startIdx= i;}
+            matches++;
+        }
+
+        i += 1;
+
+        if (matches===target.length) {
+            minLen= i - startIdx;
+            break;
+        }
+    }
+
+    if (startIdx===undefinde) {
+        return 'no such window exists';
+    }
+
+    return str.slice(startIdx, startIdx+minLen);
 }
 
 const assert= require('assert').strict;
