@@ -13,11 +13,10 @@ the longest increasing subsequence has length 6: it is 0, 2, 6, 9, 11, 15.
 
 function getSequence(arr) {
   const seq=[];
-  let max=0;
-  let pos=0;
+  let max=0; // number of items that are greater than i-th element
+  let pos=0; // index of the i-th element
   for (let i=0; i<arr.length-1; i++) {
-    const sub=arr.slice(i+1);
-    const len=sub.filter(e=>e>=arr[i]).length;
+    const len=countSup(arr.slice(i));
     if (max<len || max===len && arr[i]<arr[pos]) {
       max=len;
       pos=i;
@@ -29,15 +28,15 @@ function getSequence(arr) {
 
   for (let i=0; i<arr.length; i++) {
 
-    if (arr[i]<seq[seq.length-1]) continue;
+    if (arr[i]<=seq[seq.length-1]) continue; // consider only items that strictly greater than current element
 
     pos=i;
     max=0;
 
     for (let j=i; j<arr.length; j++) {
 
-      if (arr[j]>=seq[seq.length-1]) {
-        const len=countAbove(arr.slice(j));
+      if (arr[j]>seq[seq.length-1]) {
+        const len=countSup(arr.slice(j));
 
         if (max<len || max===len && arr[pos]>arr[j]) {
           max=len;
@@ -53,9 +52,9 @@ function getSequence(arr) {
   return seq.length;
 }
 
-function countAbove(arr) {
-  let first=arr[0];
-  return arr.slice(1).filter(e=>e>=first).length;
+function countSup(arr) {
+  const first=arr[0];
+  return arr.filter(e=>e>first).length;
 }
 
 const assert=require('assert').strict;
