@@ -11,6 +11,18 @@ the array [0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15],
 the longest increasing subsequence has length 6: it is 0, 2, 6, 9, 11, 15.
 */
 
+// first approach (it does work)
+const lisBottomUp=(arr)=>{
+  const t=arr.map(e=>1);
+
+  arr.forEach((e,i)=> {
+    for (let j=0; j<i; j++) { arr[j]<e && t[j]+1>t[i] && (t[i]=t[j]+1); }
+  });
+
+  return Math.max(0, ...t);
+};
+
+// second approach (it doesn't)
 function getSequence(arr) {
   const seq=[];
   let max=0; // number of items that are greater than i-th element
@@ -48,7 +60,6 @@ function getSequence(arr) {
     i=pos;
     seq.push(arr[pos]);
   }
-  console.log(seq);
   return seq.length;
 }
 
@@ -57,10 +68,13 @@ function countSup(arr) {
   return arr.filter(e=>e>first).length;
 }
 
-const assert=require('assert').strict;
-assert.equal(getSequence([0,8,4,12,2,10,6,14,1,9,5,13,3,11,7,15]),[0,2,6,9,11,15].length);
-assert.equal(getSequence([1,5,4,8,42]),4);
-assert.equal(getSequence([8,5,7,8,2]),3);
-assert.equal(getSequence([8,5,1,8,2]),2);
-assert.equal(getSequence([7,2,1,3,8,4,9,1,2,6,5,9,3,8,1]),5);
 
+// the random tests show: the second approach is not always correct
+
+const assert=require('assert').strict;
+
+[...Array(100)].forEach((e)=>{
+  e=[...Array(22)].map((_,i)=>(i+1)*Math.random()*100|0);
+  console.log(e);
+  assert.equal(lisBottomUp(e),getSequence(e));
+});
